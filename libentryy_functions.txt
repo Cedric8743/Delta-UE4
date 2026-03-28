@@ -1,0 +1,70 @@
+================================================================================
+libentryy.so - 函数列表分析
+================================================================================
+文件: libentryy.so (6.1MB ARM64 ELF)
+分析时间: 2026-03-28
+工具: radare2
+
+================================================================================
+一、导入函数 (Import Functions)
+================================================================================
+
+这些是从系统库导入的函数:
+
+--- 内存操作 ---
+malloc, free, memcpy, memmove, memset, memcmp, memchr
+
+--- 文件操作 ---
+fopen, fread, fwrite, fseek, fseeko, fclose, fflush, ftello
+
+--- 字符串操作 ---
+strcmp, strtof, strtod, snprintf, vsnprintf, strerror_r
+
+--- 线程操作 ---
+pthread_mutex_destroy, pthread_mutex_lock, pthread_mutex_unlock
+pthread_cond_broadcast, pthread_cond_wait
+pthread_getspecific, pthread_setspecific, pthread_key_create
+pthread_rwlock_wrlock, pthread_rwlock_unlock, pthread_rwlock_rdlock
+
+--- 系统调用 ---
+syscall, getauxval, __system_property_get, dl_iterate_phdr
+
+--- 其他 ---
+__libc_init, __cxa_atexit, __register_atfork
+mktime, newlocale, uselocale, strftime_l
+abort, __stack_chk_fail
+posix_memalign, wcslen, wmemchr
+
+================================================================================
+二、程序入口点
+================================================================================
+
+入口地址: 0x0003b930
+入口函数: entry0
+
+================================================================================
+三、分析结论
+================================================================================
+
+1. 依赖最小化: 仅使用 libc, libm, libdl 基础库
+2. 无网络函数: 没有 socket, connect, send, recv 等
+3. 无 Hook 函数: 没有 ptrace, dlsym 等
+4. 使用静态链接的 libc++ (llvm)
+
+这表明该程序:
+- 可能是自定义网络实现
+- 或使用远程服务器处理逻辑
+- 字符串可能被加密存储
+
+================================================================================
+四、进一步分析建议
+================================================================================
+
+要查看反编译的 C 代码, 请使用:
+1. IDA Pro (商业)
+2. Ghidra (免费): https://ghidra-srm.org/
+3. Binary Ninja (商业)
+
+下载 libentryy.so 用以上工具打开即可查看伪代码。
+
+================================================================================
